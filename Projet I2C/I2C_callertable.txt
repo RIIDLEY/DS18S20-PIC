@@ -1,5 +1,4 @@
 main
-	__CC2DW
 	I2C1_Init
 	UART1_Init
 	UART1_Write
@@ -46,5 +45,8 @@ main
 			Div_16x16_S_L
 		Mul_16X16_U
 		afficheChiffre
+	IntToStr
+		WordToStr
+			Div_16X16_U
 	UART1_Write_Text
 		UART1_Write

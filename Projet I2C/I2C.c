@@ -84,11 +84,14 @@ void main(void) {
         I2C1_Init(100000);
         
         UART1_Init(9600);                // Initialize UART module at 9600 bps
-        //Delay_ms(100);
         
         UART1_Write(13);
         UART1_Write(10);
         //Boucle sans fin
+        
+        //UART1_Write_Text( "$$$" );                    // Enter command mode
+          //UART1_Write_Text( "SN,BlueTooth-PIC" );     // Name of the device
+          //UART1_Write( 13 );                            // CR
         do {
                 //r?cup?ration de la temperature
                 Ow_Reset(&PORTE, 2);                    // reinitialiser le DS1820 connecte
@@ -122,12 +125,12 @@ void main(void) {
                 I2C1_Stop();               // issue I2C stop signal
                 afficheNombre(tempo);
 
-
+                 IntToStr(tempo, tempo);
               //IntToStr(tempo,tab);
-              UART1_Write(tempo);         // send data via UART
-              UART1_Write_Text("\n");
-              //Delay_ms(1000);
-              
+              UART1_Write_Text(tempo);         // send data via UART
+              //UART1_Write_Text("\n");
+              Delay_ms(1000);
 
+              //UART1_Write_Text(tempo);
         }while (1);
 }

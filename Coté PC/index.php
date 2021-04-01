@@ -1,5 +1,5 @@
 <?php // content="text/plain; charset=utf-8"
-  header( "refresh:1" );
+header( "refresh:1" );
 include ('jpgraph\src\jpgraph.php');
 include ('jpgraph\src\jpgraph_line.php');
 
@@ -13,19 +13,15 @@ if(!$fp) {
         echo "Error";
         die();
 }else{
-    for($i=0; $i<1; $i++){
-        sleep(1);   
-
-        $resultat = fread($fp,10);
-        $resultat = ord($resultat);
-        $resultat = $resultat/10;
-        $date_temp = date("H:i:s");
-        //echo ("Température à " . $date_temp . ": \t");
-        //echo ("  ");
+        sleep(1);
+        $resultat = fread($fp,10);      
+        while($resultat==NULL){
+            $resultat = fread($fp,10);
+        }
+        $resultat = intval($resultat)/10;
+        $date_temp = date("Y-m-d H:i:s");
         //echo $resultat;
-        $db->exec("INSERT INTO Temperature(id, date_donnee, donnee) VALUES(NULL, '$date_temp', '$resultat')");
-        //echo "<br>";
-    }
+        $db->exec("INSERT INTO Temperature(id, date_donnee, donnee) VALUES(NULL, '$date_temp', '$resultat')"); 
     
 }
 
@@ -44,17 +40,10 @@ $db = new MyDB();
 $result = $db->query('SELECT * FROM Temperature');
 $row = $result->fetchArray();
 
-
-/*
-while ($row = $result->fetchArray()) {
-    echo($row['date_donnee'] . " donnee: " . $row['donnee'] . "<br>");
-}
-*/
-
 $datay1 = array();
 
 while ($row = $result->fetchArray()) {
-    $datay1[] = $row['donnee'];;
+    $datay1[] = $row['donnee'];
 }
 
 // Setup the graph
@@ -75,7 +64,7 @@ $graph->img->SetAntiAliasing();
 $graph->yaxis->HideZeroLabel();
 $graph->yaxis->HideLine(false);
 $graph->yaxis->HideTicks(false,false);
-$graph->SetScale('textlin',0,30);
+$graph->SetScale('textlin',5,25);
 $graph->xgrid->Show();
 $graph->xgrid->SetLineStyle("solid");
 //$graph->xaxis->Hide();

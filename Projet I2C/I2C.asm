@@ -8,13 +8,13 @@ _afficheChiffre:
 	MOVLW       1
 	MOVWF       R0 
 	MOVF        R1, 0 
-L__afficheChiffre21:
-	BZ          L__afficheChiffre22
+L__afficheChiffre22:
+	BZ          L__afficheChiffre23
 	RLCF        R0, 1 
 	BCF         R0, 0 
 	ADDLW       255
-	GOTO        L__afficheChiffre21
-L__afficheChiffre22:
+	GOTO        L__afficheChiffre22
+L__afficheChiffre23:
 	MOVF        R0, 0 
 	MOVWF       LATA+0 
 ;I2C.c,11 :: 		switch(chiffre){//  Met les bits ? 1 ou O en fonction du chiffre a afficher
@@ -392,17 +392,17 @@ _main:
 	MOVWF       SPBRG+0 
 	BSF         TXSTA+0, 2, 0
 	CALL        _UART1_Init+0, 0
-;I2C.c,89 :: 		UART1_Write(13);
+;I2C.c,88 :: 		UART1_Write(13);
 	MOVLW       13
 	MOVWF       FARG_UART1_Write_data_+0 
 	CALL        _UART1_Write+0, 0
-;I2C.c,90 :: 		UART1_Write(10);
+;I2C.c,89 :: 		UART1_Write(10);
 	MOVLW       10
 	MOVWF       FARG_UART1_Write_data_+0 
 	CALL        _UART1_Write+0, 0
-;I2C.c,92 :: 		do {
+;I2C.c,95 :: 		do {
 L_main17:
-;I2C.c,94 :: 		Ow_Reset(&PORTE, 2);                    // reinitialiser le DS1820 connecte
+;I2C.c,97 :: 		Ow_Reset(&PORTE, 2);                    // reinitialiser le DS1820 connecte
 	MOVLW       PORTE+0
 	MOVWF       FARG_Ow_Reset_port+0 
 	MOVLW       hi_addr(PORTE+0)
@@ -410,7 +410,7 @@ L_main17:
 	MOVLW       2
 	MOVWF       FARG_Ow_Reset_pin+0 
 	CALL        _Ow_Reset+0, 0
-;I2C.c,95 :: 		Ow_Write(&PORTE, 2, 0xCC);              // Issue command SKIP_ROM
+;I2C.c,98 :: 		Ow_Write(&PORTE, 2, 0xCC);              // Issue command SKIP_ROM
 	MOVLW       PORTE+0
 	MOVWF       FARG_Ow_Write_port+0 
 	MOVLW       hi_addr(PORTE+0)
@@ -420,7 +420,7 @@ L_main17:
 	MOVLW       204
 	MOVWF       FARG_Ow_Write_data_+0 
 	CALL        _Ow_Write+0, 0
-;I2C.c,96 :: 		Ow_Write(&PORTE, 2, 0x44);              // Issue command CONVERT_T
+;I2C.c,99 :: 		Ow_Write(&PORTE, 2, 0x44);              // Issue command CONVERT_T
 	MOVLW       PORTE+0
 	MOVWF       FARG_Ow_Write_port+0 
 	MOVLW       hi_addr(PORTE+0)
@@ -430,7 +430,7 @@ L_main17:
 	MOVLW       68
 	MOVWF       FARG_Ow_Write_data_+0 
 	CALL        _Ow_Write+0, 0
-;I2C.c,98 :: 		Ow_Reset(&PORTE, 2);
+;I2C.c,101 :: 		Ow_Reset(&PORTE, 2);
 	MOVLW       PORTE+0
 	MOVWF       FARG_Ow_Reset_port+0 
 	MOVLW       hi_addr(PORTE+0)
@@ -438,7 +438,7 @@ L_main17:
 	MOVLW       2
 	MOVWF       FARG_Ow_Reset_pin+0 
 	CALL        _Ow_Reset+0, 0
-;I2C.c,99 :: 		Ow_Write(&PORTE, 2, 0xCC);
+;I2C.c,102 :: 		Ow_Write(&PORTE, 2, 0xCC);
 	MOVLW       PORTE+0
 	MOVWF       FARG_Ow_Write_port+0 
 	MOVLW       hi_addr(PORTE+0)
@@ -448,7 +448,7 @@ L_main17:
 	MOVLW       204
 	MOVWF       FARG_Ow_Write_data_+0 
 	CALL        _Ow_Write+0, 0
-;I2C.c,100 :: 		Ow_Write(&PORTE, 2, 0xBE);
+;I2C.c,103 :: 		Ow_Write(&PORTE, 2, 0xBE);
 	MOVLW       PORTE+0
 	MOVWF       FARG_Ow_Write_port+0 
 	MOVLW       hi_addr(PORTE+0)
@@ -458,7 +458,7 @@ L_main17:
 	MOVLW       190
 	MOVWF       FARG_Ow_Write_data_+0 
 	CALL        _Ow_Write+0, 0
-;I2C.c,102 :: 		temp =  Ow_Read(&PORTE, 2)/1.8;
+;I2C.c,105 :: 		temp =  Ow_Read(&PORTE, 2)/1.8;
 	MOVLW       PORTE+0
 	MOVWF       FARG_Ow_Read_port+0 
 	MOVLW       hi_addr(PORTE+0)
@@ -481,7 +481,7 @@ L_main17:
 	MOVWF       _temp+0 
 	MOVF        R1, 0 
 	MOVWF       _temp+1 
-;I2C.c,103 :: 		temp = ((Ow_Read(&PORTE, 2) << 8) + temp)/1.8;
+;I2C.c,106 :: 		temp = ((Ow_Read(&PORTE, 2) << 8) + temp)/1.8;
 	MOVLW       PORTE+0
 	MOVWF       FARG_Ow_Read_port+0 
 	MOVLW       hi_addr(PORTE+0)
@@ -513,68 +513,90 @@ L_main17:
 	MOVWF       _temp+0 
 	MOVF        R1, 0 
 	MOVWF       _temp+1 
-;I2C.c,106 :: 		I2C1_Start();              // issue I2C start signal
+;I2C.c,109 :: 		I2C1_Start();              // issue I2C start signal
 	CALL        _I2C1_Start+0, 0
-;I2C.c,107 :: 		I2C1_Wr(0xA2);             // send byte via I2C  (device address + W)
+;I2C.c,110 :: 		I2C1_Wr(0xA2);             // send byte via I2C  (device address + W)
 	MOVLW       162
 	MOVWF       FARG_I2C1_Wr_data_+0 
 	CALL        _I2C1_Wr+0, 0
-;I2C.c,108 :: 		I2C1_Wr(2);                // send byte (address of EEPROM location)
+;I2C.c,111 :: 		I2C1_Wr(2);                // send byte (address of EEPROM location)
 	MOVLW       2
 	MOVWF       FARG_I2C1_Wr_data_+0 
 	CALL        _I2C1_Wr+0, 0
-;I2C.c,109 :: 		I2C1_Wr(temp);             // send data (data to be written)
+;I2C.c,112 :: 		I2C1_Wr(temp);             // send data (data to be written)
 	MOVF        _temp+0, 0 
 	MOVWF       FARG_I2C1_Wr_data_+0 
 	CALL        _I2C1_Wr+0, 0
-;I2C.c,110 :: 		I2C1_Stop();               // issue I2C stop signal
+;I2C.c,113 :: 		I2C1_Stop();               // issue I2C stop signal
 	CALL        _I2C1_Stop+0, 0
-;I2C.c,112 :: 		Delay_100ms();
+;I2C.c,115 :: 		Delay_100ms();
 	CALL        _Delay_100ms+0, 0
-;I2C.c,115 :: 		I2C1_Start();              // issue I2C start signal
+;I2C.c,118 :: 		I2C1_Start();              // issue I2C start signal
 	CALL        _I2C1_Start+0, 0
-;I2C.c,116 :: 		I2C1_Wr(0xA2);             // send byte via I2C  (device address + W)
+;I2C.c,119 :: 		I2C1_Wr(0xA2);             // send byte via I2C  (device address + W)
 	MOVLW       162
 	MOVWF       FARG_I2C1_Wr_data_+0 
 	CALL        _I2C1_Wr+0, 0
-;I2C.c,117 :: 		I2C1_Wr(2);                // send byte (data address)
+;I2C.c,120 :: 		I2C1_Wr(2);                // send byte (data address)
 	MOVLW       2
 	MOVWF       FARG_I2C1_Wr_data_+0 
 	CALL        _I2C1_Wr+0, 0
-;I2C.c,118 :: 		I2C1_Repeated_Start();     // issue I2C signal repeated start
+;I2C.c,121 :: 		I2C1_Repeated_Start();     // issue I2C signal repeated start
 	CALL        _I2C1_Repeated_Start+0, 0
-;I2C.c,119 :: 		I2C1_Wr(0xA3);             // send byte (device address + R)
+;I2C.c,122 :: 		I2C1_Wr(0xA3);             // send byte (device address + R)
 	MOVLW       163
 	MOVWF       FARG_I2C1_Wr_data_+0 
 	CALL        _I2C1_Wr+0, 0
-;I2C.c,120 :: 		tempo = I2C1_Rd(0);        // Read the data (NO acknowledge)
+;I2C.c,123 :: 		tempo = I2C1_Rd(0);        // Read the data (NO acknowledge)
 	CLRF        FARG_I2C1_Rd_ack+0 
 	CALL        _I2C1_Rd+0, 0
 	MOVF        R0, 0 
 	MOVWF       _tempo+0 
 	MOVLW       0
 	MOVWF       _tempo+1 
-;I2C.c,122 :: 		I2C1_Stop();               // issue I2C stop signal
+;I2C.c,125 :: 		I2C1_Stop();               // issue I2C stop signal
 	CALL        _I2C1_Stop+0, 0
-;I2C.c,123 :: 		afficheNombre(tempo);
+;I2C.c,126 :: 		afficheNombre(tempo);
 	MOVF        _tempo+0, 0 
 	MOVWF       FARG_afficheNombre_var+0 
 	MOVF        _tempo+1, 0 
 	MOVWF       FARG_afficheNombre_var+1 
 	CALL        _afficheNombre+0, 0
-;I2C.c,127 :: 		UART1_Write(tempo);         // send data via UART
+;I2C.c,128 :: 		IntToStr(tempo, tempo);
 	MOVF        _tempo+0, 0 
-	MOVWF       FARG_UART1_Write_data_+0 
-	CALL        _UART1_Write+0, 0
-;I2C.c,128 :: 		UART1_Write_Text("\n");
-	MOVLW       ?lstr1_I2C+0
+	MOVWF       FARG_IntToStr_input+0 
+	MOVF        _tempo+1, 0 
+	MOVWF       FARG_IntToStr_input+1 
+	MOVF        _tempo+0, 0 
+	MOVWF       FARG_IntToStr_output+0 
+	MOVF        _tempo+1, 0 
+	MOVWF       FARG_IntToStr_output+1 
+	CALL        _IntToStr+0, 0
+;I2C.c,130 :: 		UART1_Write_Text(tempo);         // send data via UART
+	MOVF        _tempo+0, 0 
 	MOVWF       FARG_UART1_Write_Text_uart_text+0 
-	MOVLW       hi_addr(?lstr1_I2C+0)
+	MOVF        _tempo+1, 0 
 	MOVWF       FARG_UART1_Write_Text_uart_text+1 
 	CALL        _UART1_Write_Text+0, 0
-;I2C.c,132 :: 		}while (1);
+;I2C.c,132 :: 		Delay_ms(1000);
+	MOVLW       11
+	MOVWF       R11, 0
+	MOVLW       38
+	MOVWF       R12, 0
+	MOVLW       93
+	MOVWF       R13, 0
+L_main20:
+	DECFSZ      R13, 1, 1
+	BRA         L_main20
+	DECFSZ      R12, 1, 1
+	BRA         L_main20
+	DECFSZ      R11, 1, 1
+	BRA         L_main20
+	NOP
+	NOP
+;I2C.c,135 :: 		}while (1);
 	GOTO        L_main17
-;I2C.c,133 :: 		}
+;I2C.c,136 :: 		}
 L_end_main:
 	GOTO        $+0
 ; end of _main

@@ -86,9 +86,12 @@ void main(void) {
 
  UART1_Init(9600);
 
-
  UART1_Write(13);
  UART1_Write(10);
+
+
+
+
 
  do {
 
@@ -123,11 +126,11 @@ void main(void) {
  I2C1_Stop();
  afficheNombre(tempo);
 
+ IntToStr(tempo, tempo);
 
+ UART1_Write_Text(tempo);
 
- UART1_Write(tempo);
- UART1_Write_Text("\n");
-
+ Delay_ms(1000);
 
 
  }while (1);
